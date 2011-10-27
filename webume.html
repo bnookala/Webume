@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<link href="./static/css/bootstrap.min.css" rel="stylesheet">
+		<link href="webume.css" rel="stylesheet">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.10/jquery-ui.min.js"></script>
+		<script src="http://ajax.cdnjs.com/ajax/libs/underscore.js/1.1.4/underscore-min.js"></script>
+		<script src="./static/js/bootstrap-alerts.js"></script>
+		<script src="./static/js/bootstrap-modal.js"></script>
+		<script src="./static/js/bootstrap-dropdown.js"></script>
+		<script src="./static/js/bootstrap-twipsy.js"></script>
+		<script src="./static/js/bootstrap-popover.js"></script>
+		<script src="./static/js/bootstrap-scrollspy.js"></script>
+		<script src="./static/js/bootstrap-tabs.js"></script>
+		<script src="monk.js"></script>
+	</head>
+
+	<body>
+
+		<!-- Top/Headliner bar -->
+		<div class="topbar">
+			<div class="fill">
+				<div class="container">
+					<a class="brand" href="#">Webume</a>
+					<form action="" class="pull-right">
+						<input class="input-small" type="text" placeholder="Username">
+						<input class="input-small" type="password" placeholder="Password">
+						<button class="btn" type="submit">Sign in</button>
+					</form>
+				</div>
+			</div>
+		</div>
+
+		<!-- Container for data -->
+		<div class="container">
+			<div id="header">
+				<input id="task-add" type="text">
+			</div>
+
+			<div style="clear: both"></div>
+
+			<div id="prototype">
+				<li class="task">
+				<!-- TODO: silent id field -->
+					<div>
+						<span class="button checkbox-unchecked" style="float: left"></span>
+						<span class="button delete" style="float: right"></span>
+						<span class="button calendar" style="float: right"></span>
+						<span class="button note" style="float: right"></span>
+						<div class="task-title">This is a task</div>
+						<input class="task-title-edit" type="text">
+					</div>
+
+					<ul class="task-list">
+						<div class="task-insert-child"></div>
+					</ul>
+					<div class="task-insert-after"></div>
+				</li>
+			</div>
+
+			<div class="task" id="task-root">
+				<ul class="task-list" id="task-root-list">
+					<div class="task-insert-child"></div>
+				</ul>
+			</div>
+		</div>
+	</body>
+</html>
