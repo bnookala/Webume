@@ -1,14 +1,10 @@
-use Rack::Static,
-	:urls => ["/img", "/static"],
-	:root -> "public"
+require "rubygems"
+require 'rack/contrib'
+require 'rack-rewrite'
 
-run lambda { |env|
-	[
-		200,
-		{
-			'Content-Type' => 'text/html',
-			'Cache-Control' => 'public, max-age=86400'
-		},
-		File.open('public/webume.html', File::RDONLY)
-	]
-}
+use Rack::Static, :root -> "public"
+use Rack::ETag
+use Rack::Rewrite do
+	rewrite '/', 'webume.html'
+end
+run Rack::Directory.new('public')
