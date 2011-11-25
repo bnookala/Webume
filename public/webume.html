@@ -1,71 +1,103 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 
 <html>
 	<head>
-		<link href="./static/css/bootstrap.min.css" rel="stylesheet">
+		<!--<link href="./static/css/bootstrap.min.css" rel="stylesheet">-->
 		<link href="webume.css" rel="stylesheet">
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+		<script src="./static/js/vendor/jquery-1.6.4.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.10/jquery-ui.min.js"></script>
-		<script src="http://ajax.cdnjs.com/ajax/libs/underscore.js/1.1.4/underscore-min.js"></script>
-		<script src="./static/js/bootstrap-alerts.js"></script>
-		<script src="./static/js/bootstrap-modal.js"></script>
-		<script src="./static/js/bootstrap-dropdown.js"></script>
-		<script src="./static/js/bootstrap-twipsy.js"></script>
-		<script src="./static/js/bootstrap-popover.js"></script>
-		<script src="./static/js/bootstrap-scrollspy.js"></script>
-		<script src="./static/js/bootstrap-tabs.js"></script>
-		<script src="monk.js"></script>
+		<script src="./static/js/vendor/underscore-1.2.1.js"></script>
+		<script src="./static/js/vendor/backbone.js"></script>
+		<script src="./static/js/vendor/backbone-localstorage.js"></script>
+		<script src="models.js"></script>
+		<script src="collections.js"></script>
+		<script src="views.js"></script>
+		<script src="objects.js"></script>
+		<!--
+		<script src="./static/js/vendor/bootstrap/bootstrap-alerts.js"></script>
+		<script src="./static/js/vendor/bootstrap/bootstrap-modal.js"></script>
+		<script src="./static/js/vendor/bootstrap/bootstrap-dropdown.js"></script>
+		<script src="./static/js/vendor/bootstrap/bootstrap-twipsy.js"></script>
+		<script src="./static/js/vendor/bootstrap/bootstrap-popover.js"></script>
+		<script src="./static/js/vendor/bootstrap/bootstrap-scrollspy.js"></script>
+		<script src="./static/js/vendor/bootstrap/bootstrap-tabs.js"></script>
+		-->
 	</head>
 
 	<body>
-		<h1> hi </h1>
-        <h1> this is bhargav </h1>
-		<!-- Top/Headliner bar -->
-		<div class="topbar">
-			<div class="fill">
-				<div class="container">
-					<a class="brand" href="#">Webume</a>
-					<form action="" class="pull-right">
-						<input class="input-small" type="text" placeholder="Username">
-						<input class="input-small" type="password" placeholder="Password">
-						<button class="btn" type="submit">Sign in</button>
-					</form>
-				</div>
+		<!-- App Container -->
+		<div id="container">
+			<div id="basics">
+			</div>
+			<div id="education">
+				<h1> Education </h1>
+				<a href="#" id="add-education">[+]</a>
+				<ul id="education-list"></ul>
+			</div>
+			<div id="professional">
+				<h1> Professional </h1>
+				<a href="#" id="add-professional">[+]</a>
+				<ul id="professional-list"></ul>
+			</div>
+			<div id="skills">
+				<h1> Skills </h1>
+				<a href="#" id="add-skill">[+]</a>
+				<ul id="skill-list"></ul>
 			</div>
 		</div>
 
-		<!-- Container for data -->
-		<div class="container">
-			<div id="header">
-				<input id="task-add" type="text">
-			</div>
-
-			<div style="clear: both"></div>
-
-			<div id="prototype">
-				<li class="task">
-				<!-- TODO: silent id field -->
-					<div>
-						<span class="button checkbox-unchecked" style="float: left"></span>
-						<span class="button delete" style="float: right"></span>
-						<span class="button calendar" style="float: right"></span>
-						<span class="button note" style="float: right"></span>
-						<div class="task-title">This is a task</div>
-						<input class="task-title-edit" type="text">
+		<!-- Templates -->
+		<script type="text/template" id="basics-template">
+			<div id="basics-singleton" class="basics">
+				<form id="basic_info_input" class="data">
+					<input class="h1 name_input" type="text" placeholder="Name" value="<%= name %>"/>
+					<div class="user_details">
+						<input class="basics_address" type="text" placeholder="Address" value="<%= address %>"/>
+						|
+						<input class="basics_city" type="text" placeholder="City" value="<%= city %>"/>,
+						<input class="basics_state" type="text" placeholder="State" value="<%= state %>"/>
+						<input class="basics_zip" type="text" placeholder="Zip" value="<%= zip %>"/>
+						|
+						<input class="phone" type="text" placeholder="217-867-5309" value="<%= phone %>"/>
+						|
+						<input class="email_addr" type="text" placeholder="you@domain.com" value="<%= email %>"/>
 					</div>
-
-					<ul class="task-list">
-						<div class="task-insert-child"></div>
-					</ul>
-					<div class="task-insert-after"></div>
-				</li>
+				</form>
 			</div>
+		</script>
 
-			<div class="task" id="task-root">
-				<ul class="task-list" id="task-root-list">
-					<div class="task-insert-child"></div>
+		<script type="text/template" id="education-template">
+			<a href="#" class="destroy-education">[-]</a>
+			<div class="education">
+				<form class="data">
+					<input class="education_name" value="<%= school %>"/>
+					<input class="education_degree" value="<%= degree %>"/>
+					<input class="education_concentration" value="<%= concentration %>"/>
+				</form>
+			</div>
+		</script>
+
+		<script type="text/template" id="professional-template">
+			<a href="#" class="destroy-professional">[-]</a>
+			<div class="professional">
+				<form class="data">
+					<input class="workplace_name" value="<%= workplace %>"/>
+					<input class="workplace_title" value="<%= workplace_title %>"/>
+					<input class="workplace_brief" value="<%= workplace_brief %>"/>
+					<ul id="accomplished_things"></ul>
+				</form>
 				</ul>
 			</div>
-		</div>
+		</script>
+
+		<script type="text/template" id="skill-template">
+			<a href="#" class="destroy-skill">[-]</a>
+			<div class="skill">
+				<form class="data">
+					<input class="skill_type" value="<%= type %>"/>
+					<input class="skills" value="<%= skills %>"/>
+				</form>
+			</div>
+		</script>
 	</body>
 </html>
