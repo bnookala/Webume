@@ -70,4 +70,32 @@ $(window).load(function() {
 			return Skill.get('order');
 		}
 	});
+
+	Webume.Collections.ActivityList = Backbone.Collection.extend({
+		model: Webume.Models.Activity,
+		localStorage: new Store("Activity"),
+
+		nextOrder: function () {
+			if (!this.length) return 1;
+			return this.last().get('order') + 1;
+		},
+
+		comparator: function(Activity) {
+			return Activity.get('order');
+		}
+	});
+
+	Webume.Collections.ProjectList = Backbone.Collection.extend({
+		model: Webume.Models.Project,
+		localStorage: new Store("Project"),
+
+		nextOrder: function () {
+			if (!this.length) return 1;
+			return this.last().get('order') + 1;
+		},
+
+		comparator: function(Project) {
+			return Project.get('order');
+		}
+	});
 });

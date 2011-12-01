@@ -209,9 +209,115 @@ $(window).load(function() {
 			});
 			$(this.el).removeClass('editing');
 		}
-
-
 	});
+
+
+	Webume.Views.ActivityView = Backbone.View.extend({
+		tagName: "li",
+		template: _.template($("#activity-template").html()),
+
+		events: {
+			"click a.destroy-activity": "destroy",
+			"keypress div.activity form.data" : "updateOnEnter",
+			"click div.activity form.data" : "edit",
+			"blur div.activity form.data" : "close",
+		},
+
+		initialize: function () {
+			this.model.bind('change', this.render, this);
+			this.model.bind('destroy', this.remove, this);
+		},
+
+		render: function () {
+			$(this.el).html(this.template(this.model.toJSON()));
+			return this;
+		},
+
+		edit: function () {
+			$(this.el).addClass('editing');
+		},
+
+		remove: function () {
+			$(this.el).remove();
+		},
+
+		destroy: function (event) {
+			event.preventDefault();
+			event.stopPropagation();
+			this.model.destroy();
+		},
+
+		updateOnEnter: function (event) {
+			if (event.keyCode === 13) {
+				event.preventDefault();
+				event.stopPropagation();
+				this.close();
+			}
+		},
+
+		close: function () {
+			this.model.save({
+				activity_name: this.$('.activity_name').val(),
+				position: this.$('.activity_position').val(),
+				activity_description: this.$('.activity_description').val(),
+			});
+			$(this.el).removeClass('editing');
+		}
+	});
+
+	Webume.Views.ProjectView = Backbone.View.extend({
+		tagName: "li",
+		template: _.template($("#project-template").html()),
+
+		events: {
+			"click a.destroy-project": "destroy",
+			"keypress div.project form.data" : "updateOnEnter",
+			"click div.project form.data" : "edit",
+			"blur div.project form.data" : "close",
+		},
+
+		initialize: function () {
+			this.model.bind('change', this.render, this);
+			this.model.bind('destroy', this.remove, this);
+		},
+
+		render: function () {
+			$(this.el).html(this.template(this.model.toJSON()));
+			return this;
+		},
+
+		edit: function () {
+			$(this.el).addClass('editing');
+		},
+
+		remove: function () {
+			$(this.el).remove();
+		},
+
+		destroy: function (event) {
+			event.preventDefault();
+			event.stopPropagation();
+			this.model.destroy();
+		},
+
+		updateOnEnter: function (event) {
+			if (event.keyCode === 13) {
+				event.preventDefault();
+				event.stopPropagation();
+				this.close();
+			}
+		},
+
+		close: function () {
+			this.model.save({
+				project_name: this.$('.project_name').val(),
+				project_description: this.$('.project_description').val(),
+				github_uri: this.$('.project_github_uri').val(),
+			});
+			$(this.el).removeClass('editing');
+		}
+	});
+
 
 	// The main appview :)
 	Webume.Views.AppView = Backbone.View.extend({
@@ -220,7 +326,9 @@ $(window).load(function() {
 		events: {
 			"click a#add-education" : "addNewEducationView",
 			"click a#add-professional" : "addNewProfessionalView",
-			"click a#add-skill" : "addNewSkillView"
+			"click a#add-skill" : "addNewSkillView",
+			"click a#add-activity" : "addNewActivityView",
+			"click a#add-project" : "addNewProjectView",
 		},
 
 		initialize: function () {
@@ -244,6 +352,14 @@ $(window).load(function() {
 			Webume.Objects.Skills.bind('add', this.addOneSkill, this);
 			Webume.Objects.Skills.bind('reset', this.addAllSkills, this);
 			Webume.Objects.Skills.fetch();
+
+			Webume.Objects.Activities.bind('add', this.addOneActivity, this);
+			Webume.Objects.Activities.bind('reset', this.addAllActivities, this);
+			Webume.Objects.Activities.fetch();
+
+			Webume.Objects.Projects.bind('add', this.addOneProject, this);
+			Webume.Objects.Projects.bind('reset', this.addAllProjects, this);
+			Webume.Objects.Projects.fetch();
 		},
 
 		addOneBasics: function (Basics) {
@@ -291,6 +407,24 @@ $(window).load(function() {
 			Webume.Objects.Skills.each(this.addOneSkill);
 		},
 
+		addOneActivity: function (Activity) {
+			var view = new Webume.Views.ActivityView({model: Activity});
+			this.$("#activity-list").append(view.render().el);
+		},
+
+		addAllActivities: function () {
+			Webume.Objects.Activities.each(this.addOneSkill);
+		},
+
+		addOneProject: function (Project) {
+			var view = new Webume.Views.ProjectView({model: Project});
+			this.$("#project-list").append(view.render().el);
+		},
+
+		addAllProjects: function () {
+			Webume.Objects.Projects.each(this.addOneProject);
+		},
+
 		addNewEducationView: function (event) {
 			event.preventDefault();
 			event.stopPropagation();
@@ -307,6 +441,18 @@ $(window).load(function() {
 			event.preventDefault();
 			event.stopPropagation();
 			var newSkill = Webume.Objects.Skills.create({});
+		},
+
+		addNewActivityView: function (event) {
+			event.preventDefault();
+			event.stopPropagation();
+			var newActivity = Webume.Objects.Activities.create({});
+		},
+
+		addNewProjectView: function (event) {
+			event.preventDefault();
+			event.stopPropagation();
+			var newProject = Webume.Objects.Projects.create({});
 		},
 	});
 });

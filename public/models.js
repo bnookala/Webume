@@ -27,7 +27,7 @@ $(window).load(function() {
 	Webume.Models.Education = Backbone.Model.extend({
 		defaults: function () {
 			return {
-				active: false,
+				active: true,
 				school: 'University of Illinois',
 				still_attending: false,
 				start_date: '',
@@ -55,7 +55,7 @@ $(window).load(function() {
 	Webume.Models.Professional = Backbone.Model.extend({
 		defaults: function () {
 			return {
-				active: false,
+				active: true,
 				workplace: 'VMWare',
 				workplace_title: 'Member of Technical Staff Intern',
 				workplace_brief: 'Did things!',
@@ -84,7 +84,37 @@ $(window).load(function() {
 				order: Webume.Objects.Professional.nextOrder(),
 				type: 'Languages',
 				skills: 'Python, JavaScript',
+				active: true,
 			};
+		}
+	});
+
+	Webume.Models.Activity = Backbone.Model.extend({
+		defaults: function () {
+			return {
+				order: Webume.Objects.Activities.nextOrder(),
+				position: 'Treasurer',
+				activity_name: 'Reflections | Projections 2009, 2010',
+				start_date: '',
+				end_date: '',
+				activity_description: 'Did a bunch of things!',
+				current_activity: false,
+				active: true,
+			}
+		}
+	});
+
+	Webume.Models.Project = Backbone.Model.extend({
+		defaults: function () {
+			return {
+				order: Webume.Objects.Projects.nextOrder(),
+				project_name: 'Webume',
+				start_date: '',
+				end_date: '',
+				project_description: 'Made the thing you are currently using',
+				active: true,
+				github_uri: 'http://github.com/bnookala/webume'
+			}
 		}
 	});
 });

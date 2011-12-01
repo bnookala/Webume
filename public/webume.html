@@ -44,6 +44,16 @@
 				<a href="#" id="add-skill">[+]</a>
 				<ul id="skill-list"></ul>
 			</div>
+			<div id="activities">
+				<h1> Activities </h1>
+				<a href="#" id="add-activity">[+]</a>
+				<ul id="activity-list"></ul>
+			</div>
+			<div id="projects">
+				<h1> Projects </h1>
+				<a href="#" id="add-project">[+]</a>
+				<ul id="project-list"></ul>
+			</div>
 		</div>
 
 		<!-- Templates -->
@@ -98,6 +108,29 @@
 					<input class="skills" value="<%= skills %>"/>
 				</form>
 			</div>
+		</script>
+
+		<script type="text/template" id="activity-template">
+			<a href="#" class="destroy-activity">[-]</a>
+			<div class="activity">
+				<form class="data">
+					<input class="activity_name" value="<%= activity_name %>"/>
+					<input class="activity_position" value="<%= position %>"/>
+					<input class="activity_description" value="<%= activity_description %>"/>
+				</form>
+			</div>
+		</script>
+
+		<script type="text/template" id="project-template">
+			<a href="#" class="destroy-project">[-]</a>
+			<div class="project">
+				<form class="data">
+					<input class="project_name" value="<%= project_name %>"/>
+					<input class="project_description" value="<%= project_description %>"/>
+					<input class="project_github_uri" value="<%= github_uri %>"/>
+				</form>
+			</div>
+
 		</script>
 	</body>
 </html>
