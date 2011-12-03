@@ -9,5 +9,4 @@ $(window).load(function() {
 	Webume.Objects.Skills = new Webume.Collections.SkillList;
 	Webume.Objects.Activities = new Webume.Collections.ActivityList;
 	Webume.Objects.Projects = new Webume.Collections.ProjectList;
-	Webume.Objects.AppView = new Webume.Views.AppView;
 });

@@ -7,17 +7,14 @@ $(window).load(function() {
 		Webume.Views = {};
 	}
 
-	Webume.Views.BasicsView = Backbone.View.extend({
-		tagName: "div",
-		template: _.template($('#basics-template').html()),
-		events: {
-			"keypress form#basic_info_input"      : "updateOnEnter",
-			"click form#basic_info_input" : "edit",
-			"blur form#basic_info_input" : "close",
-		},
-
+	Webume.Views.Generic = Backbone.View.extend({
 		initialize: function () {
 			this.model.bind('change', this.render, this);
+			this.model.bind('destroy', this.remove, this);
+		},
+
+		remove: function () {
+			$(this.el).remove();
 		},
 
 		render: function () {
@@ -27,6 +24,31 @@ $(window).load(function() {
 
 		edit: function () {
 			$(this.el).addClass('editing');
+		},
+
+		updateOnEnter: function (event) {
+			if (event.keyCode === 13) {
+				event.preventDefault();
+				event.stopPropagation();
+				this.close();
+			}
+		},
+
+		destroy: function (event) {
+			event.preventDefault();
+			event.stopPropagation();
+			this.model.destroy();
+		}
+	});
+
+	Webume.Views.Basics = Webume.Views.Generic.extend({
+		tagName: "div",
+		template: _.template($('#basics-template').html()),
+
+		events: {
+			"keypress form#basic_info_input"      : "updateOnEnter",
+			"click form#basic_info_input" : "edit",
+			"blur form#basic_info_input" : "close",
 		},
 
 		close: function () {
@@ -41,18 +63,10 @@ $(window).load(function() {
 			});
 			$(this.el).removeClass('editing');
 		},
-
-		updateOnEnter: function (event) {
-			if (event.keyCode === 13) {
-				event.preventDefault();
-				event.stopPropagation();
-				this.close();
-			}
-		},
 	});
 
 	// Render the view for education objects
-	Webume.Views.EducationView = Backbone.View.extend({
+	Webume.Views.Education = Webume.Views.Generic.extend({
 		tagName: "li",
 		template: _.template($('#education-template').html()),
 
@@ -61,39 +75,6 @@ $(window).load(function() {
 			"keypress div.education form.data" : "updateOnEnter",
 			"click div.education form.data" : "edit",
 			"blur div.education form.data" : "close"
-		},
-
-		initialize: function () {
-			this.model.bind('change', this.render, this);
-			this.model.bind('destroy', this.remove, this);
-		},
-
-		render: function () {
-			$(this.el).html(this.template(this.model.toJSON()));
-			return this;
-		},
-
-		edit: function () {
-			console.log($(this.el));
-			$(this.el).addClass('editing');
-		},
-
-		remove: function () {
-			$(this.el).remove();
-		},
-
-		destroy: function (event) {
-			event.preventDefault();
-			event.stopPropagation();
-			this.model.destroy();
-		},
-
-		updateOnEnter: function (event) {
-			if (event.keyCode === 13) {
-				event.preventDefault();
-				event.stopPropagation();
-				this.close();
-			}
 		},
 
 		close: function () {
@@ -106,46 +87,15 @@ $(window).load(function() {
 		}
 	});
 	
-	Webume.Views.ProfessionalView = Backbone.View.extend({
+	Webume.Views.Professional = Webume.Views.Generic.extend({
 		tagName: "li",
 		template: _.template($('#professional-template').html()),
+
 		events: {
 			"click a.destroy-professional": "destroy",
 			"keypress div.professional form.data" : "updateOnEnter",
 			"click div.professional form.data" : "edit",
 			"blur div.professional form.data" : "close",
-		},
-
-		initialize: function () {
-			this.model.bind('change', this.render, this);
-			this.model.bind('destroy', this.remove, this);
-		},
-
-		render: function () {
-			$(this.el).html(this.template(this.model.toJSON()));
-			return this;
-		},
-
-		remove: function () {
-			$(this.el).remove();
-		},
-
-		destroy: function (event) {
-			event.preventDefault();
-			event.stopPropagation();
-			this.model.destroy();
-		},
-
-		edit: function () {
-			$(this.el).addClass('editing');
-		},
-
-		updateOnEnter: function (event) {
-			if (event.keyCode === 13) {
-				event.preventDefault();
-				event.stopPropagation();
-				this.close();
-			}
 		},
 
 		close: function () {
@@ -159,7 +109,7 @@ $(window).load(function() {
 		}
 	});
 
-	Webume.Views.SkillsView = Backbone.View.extend({
+	Webume.Views.Skill = Webume.Views.Generic.extend({
 		tagName: "li",
 		template: _.template($('#skill-template').html()),
 
@@ -168,38 +118,6 @@ $(window).load(function() {
 			"keypress div.skill form.data" : "updateOnEnter",
 			"click div.skill form.data" : "edit",
 			"blur div.skill form.data" : "close",
-		},
-
-		initialize: function () {
-			this.model.bind('change', this.render, this);
-			this.model.bind('destroy', this.remove, this);
-		},
-
-		render: function () {
-			$(this.el).html(this.template(this.model.toJSON()));
-			return this;
-		},
-
-		edit: function () {
-			$(this.el).addClass('editing');
-		},
-
-		remove: function () {
-			$(this.el).remove();
-		},
-
-		destroy: function (event) {
-			event.preventDefault();
-			event.stopPropagation();
-			this.model.destroy();
-		},
-
-		updateOnEnter: function (event) {
-			if (event.keyCode === 13) {
-				event.preventDefault();
-				event.stopPropagation();
-				this.close();
-			}
 		},
 
 		close: function () {
@@ -212,7 +130,7 @@ $(window).load(function() {
 	});
 
 
-	Webume.Views.ActivityView = Backbone.View.extend({
+	Webume.Views.Activity = Webume.Views.Generic.extend({
 		tagName: "li",
 		template: _.template($("#activity-template").html()),
 
@@ -221,38 +139,6 @@ $(window).load(function() {
 			"keypress div.activity form.data" : "updateOnEnter",
 			"click div.activity form.data" : "edit",
 			"blur div.activity form.data" : "close",
-		},
-
-		initialize: function () {
-			this.model.bind('change', this.render, this);
-			this.model.bind('destroy', this.remove, this);
-		},
-
-		render: function () {
-			$(this.el).html(this.template(this.model.toJSON()));
-			return this;
-		},
-
-		edit: function () {
-			$(this.el).addClass('editing');
-		},
-
-		remove: function () {
-			$(this.el).remove();
-		},
-
-		destroy: function (event) {
-			event.preventDefault();
-			event.stopPropagation();
-			this.model.destroy();
-		},
-
-		updateOnEnter: function (event) {
-			if (event.keyCode === 13) {
-				event.preventDefault();
-				event.stopPropagation();
-				this.close();
-			}
 		},
 
 		close: function () {
@@ -265,7 +151,7 @@ $(window).load(function() {
 		}
 	});
 
-	Webume.Views.ProjectView = Backbone.View.extend({
+	Webume.Views.Project = Webume.Views.Generic.extend({
 		tagName: "li",
 		template: _.template($("#project-template").html()),
 
@@ -274,38 +160,6 @@ $(window).load(function() {
 			"keypress div.project form.data" : "updateOnEnter",
 			"click div.project form.data" : "edit",
 			"blur div.project form.data" : "close",
-		},
-
-		initialize: function () {
-			this.model.bind('change', this.render, this);
-			this.model.bind('destroy', this.remove, this);
-		},
-
-		render: function () {
-			$(this.el).html(this.template(this.model.toJSON()));
-			return this;
-		},
-
-		edit: function () {
-			$(this.el).addClass('editing');
-		},
-
-		remove: function () {
-			$(this.el).remove();
-		},
-
-		destroy: function (event) {
-			event.preventDefault();
-			event.stopPropagation();
-			this.model.destroy();
-		},
-
-		updateOnEnter: function (event) {
-			if (event.keyCode === 13) {
-				event.preventDefault();
-				event.stopPropagation();
-				this.close();
-			}
 		},
 
 		close: function () {
@@ -320,139 +174,130 @@ $(window).load(function() {
 
 
 	// The main appview :)
-	Webume.Views.AppView = Backbone.View.extend({
+	Webume.Views.App = Backbone.View.extend({
 		el: $('#container'),
 
 		events: {
-			"click a#add-education" : "addNewEducationView",
-			"click a#add-professional" : "addNewProfessionalView",
-			"click a#add-skill" : "addNewSkillView",
-			"click a#add-activity" : "addNewActivityView",
-			"click a#add-project" : "addNewProjectView",
+			"click a#add-education" : "addNewEducation",
+			"click a#add-professional" : "addNewProfessional",
+			"click a#add-skill" : "addNewSkill",
+			"click a#add-activity" : "addNewActivity",
+			"click a#add-project" : "addNewProject",
+		},
+
+		modules: [
+			Webume.Objects.Professional,
+			Webume.Objects.Skills,
+			Webume.Objects.Activities,
+			Webume.Objects.Projects,
+			Webume.Objects.Education,
+		],
+
+		types: {
+			'basic': {
+				object: Webume.Objects.Basics,
+				el: this.$("#basics")
+			},
+			'education': {
+				object: Webume.Objects.Education,
+				el: this.$("#education-list")
+			},
+			'professional': {
+				object: Webume.Objects.Professional,
+				el: this.$("#professional-list")
+			},
+			'skill': {
+				object: Webume.Objects.Skills,
+				el: this.$("#skill-list")
+			},
+			'activity': {
+				object: Webume.Objects.Activities,
+				el: this.$("#activity-list")
+			},
+			'project': {
+				object: Webume.Objects.Projects,
+				el: this.$("#project-list")
+			}
 		},
 
 		initialize: function () {
 			// Fake some stuff
-			Webume.Objects.Basics.bind('add', this.addOneBasics, this);
-			Webume.Objects.Basics.bind('reset', this.addAllBasics, this);
+			Webume.Objects.Basics.bind('add', $.proxy(this.addOne, this));
+			Webume.Objects.Basics.bind('reset', $.proxy(this.addAll, this));
 			Webume.Objects.Basics.fetch();
 
 			if (Webume.Objects.Basics.length < 1) {
 				var basics = Webume.Objects.Basics.create({});
 			}
 
-			Webume.Objects.Education.bind('add', this.addOneEducation, this);
-			Webume.Objects.Education.bind('reset', this.addAllEducation, this);
-			Webume.Objects.Education.fetch();
-
-			Webume.Objects.Professional.bind('add', this.addOneProfessional, this);
-			Webume.Objects.Professional.bind('reset', this.addAllProfessional, this);
-			Webume.Objects.Professional.fetch();
-
-			Webume.Objects.Skills.bind('add', this.addOneSkill, this);
-			Webume.Objects.Skills.bind('reset', this.addAllSkills, this);
-			Webume.Objects.Skills.fetch();
-
-			Webume.Objects.Activities.bind('add', this.addOneActivity, this);
-			Webume.Objects.Activities.bind('reset', this.addAllActivities, this);
-			Webume.Objects.Activities.fetch();
-
-			Webume.Objects.Projects.bind('add', this.addOneProject, this);
-			Webume.Objects.Projects.bind('reset', this.addAllProjects, this);
-			Webume.Objects.Projects.fetch();
+			var app = this;
+			$.each(this.modules, function(index, module) {
+				module.bind('add', app.addOne, app);
+				module.bind('reset', app.addAll, app);
+				module.fetch();
+			});
 		},
 
-		addOneBasics: function (Basics) {
-			var view = new Webume.Views.BasicsView({model: Basics});
-			this.$("#basics").append(view.render().el);
-		},
-
-		addAllBasics: function () {
-			Webume.Objects.Basics.each(this.addOneBasics);
-		},
-
-		addBasics: function (Basics) {
-			if (_.isUndefined(Basics)) {
-				Webume.Objects.Basics.each(this.Basics);
-			} else {
-				var view = new Webume.Views.BasicsView({model: Basics});
-				this.$("#basics").append(view.render().el);
+		addOne: function (generic) {
+			var type = this.types[generic.type];
+			var view = undefined;
+			switch (generic.type) {
+			case 'basic':
+				view = new Webume.Views.Basics({model: generic});
+				break;
+			case 'education':
+				view = new Webume.Views.Education({model: generic});
+				break;
+			case 'professional':
+				view = new Webume.Views.Professional({model: generic});
+				break;
+			case 'skill':
+				view = new Webume.Views.Skill({model: generic});
+				break;
+			case 'activity':
+				view = new Webume.Views.Activity({model: generic});
+				break;
+			case 'project':
+				view = new Webume.Views.Project({model: generic});
+				break;
 			}
+			type.el.append(view.render().el);
 		},
 
-		addOneEducation: function (Education) {
-			var view = new Webume.Views.EducationView({model: Education});
-			this.$("#education-list").append(view.render().el);
+		addAll: function (generics) {
+			generics.each($.proxy(this.addOne, this));
 		},
 
-		addAllEducation: function () {
-			Webume.Objects.Education.each(this.addOneEducation);
-		},
-
-		addOneProfessional: function (Professional) {
-			var view = new Webume.Views.ProfessionalView({model: Professional});
-			this.$("#professional-list").append(view.render().el);
-		},
-
-		addAllProfessional: function () {
-			Webume.Objects.Professional.each(this.addOneProfessional);
-		},
-
-		addOneSkill: function (Skill) {
-			var view = new Webume.Views.SkillsView({model: Skill});
-			this.$("#skill-list").append(view.render().el);
-		},
-
-		addAllSkills: function () {
-			Webume.Objects.Skills.each(this.addOneSkill);
-		},
-
-		addOneActivity: function (Activity) {
-			var view = new Webume.Views.ActivityView({model: Activity});
-			this.$("#activity-list").append(view.render().el);
-		},
-
-		addAllActivities: function () {
-			Webume.Objects.Activities.each(this.addOneSkill);
-		},
-
-		addOneProject: function (Project) {
-			var view = new Webume.Views.ProjectView({model: Project});
-			this.$("#project-list").append(view.render().el);
-		},
-
-		addAllProjects: function () {
-			Webume.Objects.Projects.each(this.addOneProject);
-		},
-
-		addNewEducationView: function (event) {
+		addNewEducation: function (event) {
 			event.preventDefault();
 			event.stopPropagation();
 			var newEducation = Webume.Objects.Education.create({});
 		},
 
-		addNewProfessionalView: function (event) {
+		addNewProfessional: function (event) {
 			event.preventDefault();
 			event.stopPropagation();
 			var newProfessional = Webume.Objects.Professional.create({});
 		},
 
-		addNewSkillView: function (event) {
+		addNewSkill: function (event) {
 			event.preventDefault();
 			event.stopPropagation();
 			var newSkill = Webume.Objects.Skills.create({});
 		},
 
-		addNewActivityView: function (event) {
+		addNewActivity: function (event) {
 			event.preventDefault();
 			event.stopPropagation();
 			var newActivity = Webume.Objects.Activities.create({});
 		},
 
-		addNewProjectView: function (event) {
+		addNewProject: function (event) {
 			event.preventDefault();
 			event.stopPropagation();
 			var newProject = Webume.Objects.Projects.create({});
 		},
 	});
+
+	Webume.App = new Webume.Views.App;
 });

@@ -9,6 +9,7 @@ $(window).load(function() {
 
 	// Basic information about the user
 	Webume.Models.Basics = Backbone.Model.extend({
+		type: "basic",
 		defaults: function () {
 			return {
 				name: 'Bhargav Nookala',
@@ -25,6 +26,7 @@ $(window).load(function() {
 
 	// The Education Object
 	Webume.Models.Education = Backbone.Model.extend({
+		type: "education",
 		defaults: function () {
 			return {
 				active: true,
@@ -53,6 +55,7 @@ $(window).load(function() {
 	});
 
 	Webume.Models.Professional = Backbone.Model.extend({
+		type: "professional",
 		defaults: function () {
 			return {
 				active: true,
@@ -79,6 +82,7 @@ $(window).load(function() {
 	});
 
 	Webume.Models.Skill = Backbone.Model.extend({
+		type: "skill",
 		defaults: function () {
 			return {
 				order: Webume.Objects.Professional.nextOrder(),
@@ -90,6 +94,7 @@ $(window).load(function() {
 	});
 
 	Webume.Models.Activity = Backbone.Model.extend({
+		type: "activity",
 		defaults: function () {
 			return {
 				order: Webume.Objects.Activities.nextOrder(),
@@ -105,6 +110,7 @@ $(window).load(function() {
 	});
 
 	Webume.Models.Project = Backbone.Model.extend({
+		type: "project",
 		defaults: function () {
 			return {
 				order: Webume.Objects.Projects.nextOrder(),
